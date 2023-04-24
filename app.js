@@ -1,5 +1,10 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
+import mongoose from 'mongoose';
+
+mongoose.connect('mongodb://localhost:27017/admin2')
+.then(()=>console.log('BD-ok'))
+.catch((err)=>console.log('BD err', err))
 
 const app = express();
 
