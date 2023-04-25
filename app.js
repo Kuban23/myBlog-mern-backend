@@ -3,8 +3,8 @@ import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 
 mongoose.connect('mongodb://localhost:27017/admin2')
-.then(()=>console.log('BD-ok'))
-.catch((err)=>console.log('BD err', err))
+   .then(() => console.log('BD-ok'))
+   .catch((err) => console.log('BD err', err))
 
 const app = express();
 
@@ -33,7 +33,11 @@ app.post('/auth/login', (req, res) => {
    res.json(
       {
          "saccess": "true",
-          token,
+         token,
       }
    )
+});
+
+app.post('/auth/register', (req, res) => {
+
 });
