@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 
-const UserSchema = new mongoose.Schema({
-   imail: {
+const UserSchema = new mongoose.Schema({ 
+   email: {
       type: String,
       required: true,
       unique: true
    },
-   password: {
+   passwordHash: {
       type: String,
       required: true,
    },
@@ -14,7 +14,7 @@ const UserSchema = new mongoose.Schema({
       type: String,
       required: true,
    },
-   avatar:String,
+   avatarUrl:String,
 },
 {
    timestamps:true
