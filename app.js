@@ -5,6 +5,7 @@ import { registerValidation } from './validation/auth.js';
 import { validationResult } from 'express-validator';
 import userModel from './models/user.js';
 import bcrypt from 'bcrypt';
+import checkAuth from './utils/checkAuth.js';
 
 mongoose.connect('mongodb://localhost:27017/blog')
    .then(() => console.log('BD-ok'))
@@ -103,6 +104,28 @@ app.post('/auth/login', async (req, res) => {
       console.log(err);
       res.status(500).json({
          message: 'Не удалось зарегистрироваться',
+      });
+   }
+});
+
+
+// Запрос своих данных
+app.get('/auth/me', checkAuth, async (req, res) => {
+   try {
+      const user = await userModel.findById(req.userId);
+      if (!user) {
+         return res.status(404).json({
+            message: 'Нет такого пользователя'
+         });
+      }
+      const { passwordHash, ...userData } = user._doc
+      res.json(
+         userData
+      );
+   } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        message: 'Нет доступа',
       });
    }
 });
