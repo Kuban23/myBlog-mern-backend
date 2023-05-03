@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const UserSchema = new mongoose.Schema({ 
+const UserSchema = new mongoose.Schema({
    email: {
       type: String,
       required: true,
@@ -14,11 +14,11 @@ const UserSchema = new mongoose.Schema({
       type: String,
       required: true,
    },
-   avatarUrl:String,
+   avatarUrl: String,
 },
-{
-   timestamps:true
-}
+   {
+      timestamps: true
+   }
 );
 
 export default mongoose.model('user', UserSchema);

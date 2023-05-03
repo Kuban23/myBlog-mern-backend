@@ -4,7 +4,7 @@ import { loginValidation, registerValidation } from './validation/validations.js
 import checkAuth from './utils/checkAuth.js';
 import { register, login, getMe } from './controllers/UserController.js';
 import { postCreateValidation } from './validation/validations.js';
-import {createPost} from './controllers/PostController.js';
+import { createPost, getAllPosts } from './controllers/PostController.js';
 
 
 mongoose.connect('mongodb://localhost:27017/blog')
@@ -27,7 +27,7 @@ app.listen(4444, (err) => {
 app.use(express.json())
 
 // роут на регистрацию 
-app.post('/auth/register', registerValidation, register );
+app.post('/auth/register', registerValidation, register);
 
 // роут на авторизацию
 app.post('/auth/login', loginValidation, login);
@@ -38,3 +38,6 @@ app.get('/auth/me', checkAuth, getMe);
 
 // роут создания статьи
 app.post('/posts', checkAuth, postCreateValidation, createPost);
+
+// роут для запоса всех статей
+app.get('/posts', getAllPosts);
