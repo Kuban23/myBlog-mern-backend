@@ -33,3 +33,60 @@ export const getAllPosts = async (req, res) => {
       });
    }
 };
+
+// запрашиваю одну статью
+export const getOnePost = (req, res) => {
+   const postId = req.params.id;
+   postModel.findByIdAndUpdate(
+      {
+         _id: postId,
+      },
+      {
+         $inc: { viewsCount: 1 }
+      },
+      {
+         returnDocument: 'after',
+      },
+   )
+      .then((doc) => {
+         if (!doc) {
+            return res.status(404).json({
+               message: 'Статья не найдена'
+            });
+         }
+
+         res.json(doc);
+      })
+      .catch((err) => {
+         console.log(err);
+         res.status(500).json({
+            message: 'Не удалось получить статью'
+         });
+      });
+};
+
+// удаляю статью
+export const removePost = (req, res) => {
+   const postId = req.params.id;
+   postModel.findByIdAndDelete(
+      {
+         _id: postId
+      },
+   )
+      .then((doc) => {
+         if (!doc) {
+            return res.status(404).json({
+               message: 'Статья не найдена'
+            });
+         }
+         res.json({
+            message: 'Статья удалена',
+         })
+      })
+      .catch((err) => {
+         console.log(err);
+         res.status(500).json({
+            message: 'Не удалось получить статью'
+         });
+      });
+};
