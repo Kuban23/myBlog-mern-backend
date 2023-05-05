@@ -5,7 +5,7 @@ import checkAuth from './utils/checkAuth.js';
 import { register, login, getMe } from './controllers/UserController.js';
 import { postCreateValidation } from './validation/validations.js';
 import { createPost, getAllPosts, getOnePost, removePost, updatePost } from './controllers/PostController.js';
-
+import multer from 'multer';
 
 mongoose.connect('mongodb://localhost:27017/blog')
    .then(() => console.log('BD-ok'))
@@ -25,6 +25,21 @@ app.listen(4444, (err) => {
 });
 
 app.use(express.json())
+
+//создаю хранилище где будут храниться картинки
+const storage = multer.diskStorage(
+   {
+      destination: (_, __, cb) => {
+         cb(null, 'uploads');
+      },
+      filename: (_, file, cb) => {
+         cb(null, file.originalname);
+      },
+   },
+);
+
+// Применяю логику хранилища на expresse
+const upload = multer({ storage });
 
 // роут на регистрацию 
 app.post('/auth/register', registerValidation, register);
@@ -50,3 +65,13 @@ app.delete('/posts/:id', checkAuth, removePost);
 
 // роут для редактирования статьи
 app.patch('/posts/:id', checkAuth, postCreateValidation, updatePost);
+
+// Создал роут для загрузки файла.
+app.post('/uploads', checkAuth, upload.single('image'), (req, res) => {
+   res.json({
+      url: `/uploads/${req.file.originalname}`,
+   });
+});
+
+//Решение вопроса, чтобы картинка отображалась в браузере
+app.use('/uploads', express.static('uploads'));
