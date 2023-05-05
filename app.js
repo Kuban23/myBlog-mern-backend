@@ -4,7 +4,7 @@ import { loginValidation, registerValidation } from './validation/validations.js
 import checkAuth from './utils/checkAuth.js';
 import { register, login, getMe } from './controllers/UserController.js';
 import { postCreateValidation } from './validation/validations.js';
-import { createPost, getAllPosts, getOnePost, removePost } from './controllers/PostController.js';
+import { createPost, getAllPosts, getOnePost, removePost, updatePost } from './controllers/PostController.js';
 
 
 mongoose.connect('mongodb://localhost:27017/blog')
@@ -47,3 +47,6 @@ app.get('/posts/:id', getOnePost);
 
 // роут для удаления статьи
 app.delete('/posts/:id', checkAuth, removePost);
+
+// роут для редактирования статьи
+app.patch('/posts/:id', checkAuth, postCreateValidation, updatePost);

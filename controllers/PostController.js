@@ -90,3 +90,28 @@ export const removePost = (req, res) => {
          });
       });
 };
+
+// редактирую статью
+export const updatePost = async (req, res) => {
+   try {
+      const postId = req.params.id;
+
+      await postModel.updateOne(
+         {
+            title: req.body.title,
+            text: req.body.text,
+            tags: req.body.tags,
+            user: req.userId,
+            imageUrl: req.body.imageUrl,
+         }        
+      );
+      res.json({
+        message: 'Статья отредактирована'    
+      })
+   } catch (err) {
+      console.log(err);
+      res.status(500).json({
+         message: 'Не удалось отредактировать статью'
+      });
+   }
+};
