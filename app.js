@@ -6,6 +6,7 @@ import { register, login, getMe } from './controllers/UserController.js';
 import { postCreateValidation } from './validation/validations.js';
 import { createPost, getAllPosts, getOnePost, removePost, updatePost } from './controllers/PostController.js';
 import multer from 'multer';
+import handleValidationError from './utils/handleValidationError.js';
 
 mongoose.connect('mongodb://localhost:27017/blog')
    .then(() => console.log('BD-ok'))
@@ -42,17 +43,17 @@ const storage = multer.diskStorage(
 const upload = multer({ storage });
 
 // роут на регистрацию 
-app.post('/auth/register', registerValidation, register);
+app.post('/auth/register', registerValidation, handleValidationError, register);
 
 // роут на авторизацию
-app.post('/auth/login', loginValidation, login);
+app.post('/auth/login', loginValidation, handleValidationError, login);
 
 
 // роут на получение своих данных
 app.get('/auth/me', checkAuth, getMe);
 
 // роут создания статьи
-app.post('/posts', checkAuth, postCreateValidation, createPost);
+app.post('/posts', checkAuth, postCreateValidation, handleValidationError, createPost);
 
 // роут для запоса всех статей
 app.get('/posts', getAllPosts);
@@ -64,7 +65,7 @@ app.get('/posts/:id', getOnePost);
 app.delete('/posts/:id', checkAuth, removePost);
 
 // роут для редактирования статьи
-app.patch('/posts/:id', checkAuth, postCreateValidation, updatePost);
+app.patch('/posts/:id', checkAuth, postCreateValidation, handleValidationError, updatePost);
 
 // Создал роут для загрузки файла.
 app.post('/uploads', checkAuth, upload.single('image'), (req, res) => {
