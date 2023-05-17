@@ -1,11 +1,13 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import multer from 'multer';
+import cors from 'cors';
+
 import { loginValidation, registerValidation } from './validation/validations.js';
 import checkAuth from './utils/checkAuth.js';
 import { register, login, getMe } from './controllers/UserController.js';
 import { postCreateValidation } from './validation/validations.js';
 import { createPost, getAllPosts, getOnePost, removePost, updatePost } from './controllers/PostController.js';
-import multer from 'multer';
 import handleValidationError from './utils/handleValidationError.js';
 
 mongoose.connect('mongodb://localhost:27017/blog')
@@ -26,7 +28,7 @@ app.listen(4444, (err) => {
 });
 
 app.use(express.json())
-
+app.use(cors());
 //создаю хранилище где будут храниться картинки
 const storage = multer.diskStorage(
    {
