@@ -7,7 +7,7 @@ import { loginValidation, registerValidation } from './validation/validations.js
 import checkAuth from './utils/checkAuth.js';
 import { register, login, getMe } from './controllers/UserController.js';
 import { postCreateValidation } from './validation/validations.js';
-import { createPost, getAllPosts, getOnePost, removePost, updatePost } from './controllers/PostController.js';
+import { createPost, getAllPosts, getLastTags, getOnePost, removePost, updatePost } from './controllers/PostController.js';
 import handleValidationError from './utils/handleValidationError.js';
 
 mongoose.connect('mongodb://localhost:27017/blog')
@@ -78,3 +78,7 @@ app.post('/uploads', checkAuth, upload.single('image'), (req, res) => {
 
 //Решение вопроса, чтобы картинка отображалась в браузере
 app.use('/uploads', express.static('uploads'));
+
+// Создал роут для получения Тэгов
+app.get('/posts/tags', getLastTags);
+app.get('/tags', getLastTags);

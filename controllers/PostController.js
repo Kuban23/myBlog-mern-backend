@@ -103,15 +103,36 @@ export const updatePost = async (req, res) => {
             tags: req.body.tags,
             user: req.userId,
             imageUrl: req.body.imageUrl,
-         }        
+         }
       );
       res.json({
-        message: 'Статья отредактирована'    
+         message: 'Статья отредактирована'
       })
    } catch (err) {
       console.log(err);
       res.status(500).json({
          message: 'Не удалось отредактировать статью'
+      });
+   }
+};
+
+// Получаю тэги
+export const getLastTags = async (req, res) => {
+   try {
+      // Объясняем, что хотим получить последние 3 статьи и возьмем их тэги.
+      const posts = await postModel.find().limit(5).exec();
+      // Когда получили список 3-х статей, берем их и мапим их, берем каждый объект вытаскиваем его статьи flat(), когда мы сделали flat()
+      // мы должный взять последние 3 статьи,  далее передаем exec()- т.е. выполни наш запрос.
+      const tags = posts
+         .map((obj) => obj.tags)
+         .flat()
+         .slice(0, 5);
+      // возвращаю ответ
+      res.json(tags);
+   } catch (err) {
+      console.log(err);
+      res.status(500).json({
+         message: 'Не удалось получить тэги',
       });
    }
 };
