@@ -41,7 +41,7 @@ const storage = multer.diskStorage(
    },
 );
 
-// Применяю логику хранилища на expresse
+// Применяю логику хранилища на expresse 
 const upload = multer({ storage });
 
 // роут на регистрацию 

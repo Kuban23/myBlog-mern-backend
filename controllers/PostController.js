@@ -1,13 +1,14 @@
 import postModel from '../models/Post.js';
 
 
-// создаю статью
+// создаю статью user
 export const createPost = async (req, res) => {
    try {
       const doc = await new postModel({
          title: req.body.title,
          text: req.body.text,
-         tags: req.body.tags,
+         tags: req.body.tags.split(','),
+         // tags: req.body.tags,
          user: req.userId,
          imageUrl: req.body.imageUrl,
       });
@@ -48,6 +49,7 @@ export const getOnePost = (req, res) => {
          returnDocument: 'after',
       },
    )
+   .populate('user')
       .then((doc) => {
          if (!doc) {
             return res.status(404).json({
