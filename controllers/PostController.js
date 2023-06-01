@@ -49,7 +49,7 @@ export const getOnePost = (req, res) => {
          returnDocument: 'after',
       },
    )
-   .populate('user')
+      .populate('user')
       .then((doc) => {
          if (!doc) {
             return res.status(404).json({
@@ -102,7 +102,8 @@ export const updatePost = async (req, res) => {
          {
             title: req.body.title,
             text: req.body.text,
-            tags: req.body.tags,
+            tags: req.body.tags.split(','),
+            // tags: req.body.tags,
             user: req.userId,
             imageUrl: req.body.imageUrl,
          }
